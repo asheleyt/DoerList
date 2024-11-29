@@ -1,15 +1,17 @@
-using static DoerList.TaskItem;
+
+using Tulpep.NotificationWindow;
 
 namespace DoerList
 {
     public partial class MainForm : Form
     {
         private List<TaskItem> tasks = new List<TaskItem>();
-        private NotificationWindow notification;
+        private PopupNotifier notification;
+
         public MainForm()
         {
             InitializeComponent();
-            notification = new NotificationWindow();
+            notification = new PopupNotifier();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -26,13 +28,36 @@ namespace DoerList
         {
             UpdateTaskList();
             UpdateProgressBar();
+            StartTaskReminderTimer();
         }
 
-        private void btnMainToProfile_Click(object sender, EventArgs e)
+        private void StartTaskReminderTimer()
         {
-            ProfileUI profileForm = new ProfileUI();
-            profileForm.ShowDialog();
+            Timer taskReminderTimer = new Timer
+            {
+                Interval = 60000 
+            };
+            taskReminderTimer.Tick += TaskReminderTimer_Tick;
+            taskReminderTimer.Start();
         }
+        private void TaskReminderTimer_Tick(object sender, EventArgs e)
+        {
+            foreach (var task in tasks)
+            {
+                if (!task.IsCompleted)
+                {
+                    if (task.DueDate.Date == DateTime.Today.AddDays(1))
+                    {
+                        ShowNotification($"Task '{task.Name}' is due tomorrow!", NotificationType.Warning);
+                    }
+                    else if (task.DueDate.Date < DateTime.Today)
+                    {
+                        ShowNotification($"Task '{task.Name}' is overdue!", NotificationType.Error);
+                    }
+                }
+            }
+        }
+       
 
         private void btnMainToDaily_Click(object sender, EventArgs e)
         {
@@ -82,17 +107,20 @@ namespace DoerList
         private void btnAddTaskMain_Click(object sender, EventArgs e)
         {
             string newTask = Microsoft.VisualBasic.Interaction.InputBox(
-               "Enter Task Details:", "Add Task", "", -1, -1);
+                "Enter Task Details:", "Add Task", "", -1, -1);
 
             if (!string.IsNullOrWhiteSpace(newTask))
             {
-                tasks.Add(new TaskItem(newTask, DateTime.Now.AddDays(1))); 
+                DateTime dueDate = DateTime.Today.AddDays(2); 
+                tasks.Add(new TaskItem(newTask, dueDate));
                 UpdateTaskList();
-                ShowNotification("Task added successfully!", NotificationType.Success);
+                HighlightTaskDates();
+
+                ShowNotification($"Task '{newTask}' has been added successfully.", NotificationType.Success);
             }
             else
             {
-                ShowNotification("Task cannot be empty!", NotificationType.Warning);
+                ShowNotification("Task details cannot be empty.", NotificationType.Warning);
             }
         }
 
@@ -164,13 +192,32 @@ namespace DoerList
             {
                 ShowNotification("Search term cannot be empty!", NotificationType.Warning);
             }
+
         }
 
         private void ShowNotification(string message, NotificationType type)
         {
-            notification.CaptionText = "Task Manager";
+            notification.TitleText = "Task Manager";
             notification.ContentText = message;
-            notification.Show(type);
+
+            switch (type)
+            {
+                case NotificationType.Success:
+                    notification.BodyColor = Color.LightGreen;
+                    break;
+                case NotificationType.Warning:
+                    notification.BodyColor = Color.Orange;
+                    break;
+                case NotificationType.Error:
+                    notification.BodyColor = Color.Red;
+                    break;
+                case NotificationType.Info:
+                    notification.BodyColor = Color.LightBlue;
+                    break;
+            }
+
+            notification.Delay = 5000; 
+            notification.Popup();
         }
 
         public enum NotificationType
@@ -192,10 +239,8 @@ namespace DoerList
                 DueDate = dueDate;
                 IsCompleted = isCompleted;
             }
-
         }
 
-         
 
-    }
+        }
 }
