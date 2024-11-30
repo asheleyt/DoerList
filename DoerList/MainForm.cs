@@ -33,9 +33,9 @@ namespace DoerList
 
         private void StartTaskReminderTimer()
         {
-            Timer taskReminderTimer = new Timer
+            System.Windows.Forms.Timer taskReminderTimer = new System.Windows.Forms.Timer
             {
-                Interval = 60000 
+                Interval = 60000 // 1 minute
             };
             taskReminderTimer.Tick += TaskReminderTimer_Tick;
             taskReminderTimer.Start();
@@ -57,11 +57,11 @@ namespace DoerList
                 }
             }
         }
-       
+
 
         private void btnMainToDaily_Click(object sender, EventArgs e)
         {
-            DailyTaskUI dailyTaskForm = new DailyTaskUI(tasks);
+            DailyDoerUI dailyTaskForm = new DailyDoerUI(tasks);
             dailyTaskForm.TaskUpdated += (s, args) =>
             {
 
@@ -111,7 +111,7 @@ namespace DoerList
 
             if (!string.IsNullOrWhiteSpace(newTask))
             {
-                DateTime dueDate = DateTime.Today.AddDays(2); 
+                DateTime dueDate = DateTime.Today.AddDays(2);
                 tasks.Add(new TaskItem(newTask, dueDate));
                 UpdateTaskList();
                 HighlightTaskDates();
@@ -216,7 +216,7 @@ namespace DoerList
                     break;
             }
 
-            notification.Delay = 5000; 
+            notification.Delay = 5000;
             notification.Popup();
         }
 
@@ -241,6 +241,11 @@ namespace DoerList
             }
         }
 
-
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            DailyDoerUI dailyDoerUI = new DailyDoerUI();
+            dailyDoerUI.ShowDialog();
+            this.Close();
         }
+    }
 }
