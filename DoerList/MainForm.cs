@@ -1,5 +1,12 @@
 
 using Tulpep.NotificationWindow;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
+
 
 namespace DoerList
 {
@@ -7,11 +14,13 @@ namespace DoerList
     {
         private List<TaskItem> tasks = new List<TaskItem>();
         private PopupNotifier notification;
-
-        public MainForm()
+        private string loggedInUsername;
+        private string taskFilePath = "tasks.txt";
+        public MainForm(string username)
         {
             InitializeComponent();
             notification = new PopupNotifier();
+            loggedInUsername = username;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -26,6 +35,7 @@ namespace DoerList
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            LoadTasksFromFile();
             UpdateTaskList();
             UpdateProgressBar();
             StartTaskReminderTimer();
@@ -64,7 +74,7 @@ namespace DoerList
             DailyDoerUI dailyTaskForm = new DailyDoerUI(tasks);
             dailyTaskForm.TaskUpdated += (s, args) =>
             {
-
+                SaveTasksToFile(); 
                 UpdateTaskList();
                 UpdateProgressBar();
                 HighlightTaskDates();
@@ -113,6 +123,7 @@ namespace DoerList
             {
                 DateTime dueDate = DateTime.Today.AddDays(2);
                 tasks.Add(new TaskItem(newTask, dueDate));
+                SaveTasksToFile(); 
                 UpdateTaskList();
                 HighlightTaskDates();
 
@@ -133,6 +144,7 @@ namespace DoerList
                     tasks.RemoveAll(t => t.Name == selectedItem.Text);
                     listViewTask.Items.Remove(selectedItem);
                 }
+                SaveTasksToFile(); 
                 ShowNotification("Selected task(s) removed successfully!", NotificationType.Success);
                 UpdateProgressBar();
             }
@@ -155,6 +167,7 @@ namespace DoerList
                 if (confirmResult == DialogResult.Yes)
                 {
                     tasks.Clear();
+                    SaveTasksToFile(); 
                     UpdateTaskList();
                     UpdateProgressBar();
                     ShowNotification("All tasks cleared successfully!", NotificationType.Success);
@@ -218,6 +231,54 @@ namespace DoerList
 
             notification.Delay = 5000;
             notification.Popup();
+        }
+
+        private void SaveTasksToFile()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(taskFilePath))
+                {
+                    foreach (var task in tasks)
+                    {
+                        string line = $"{task.Name}|{task.DueDate}|{task.IsCompleted}";
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowNotification($"Error saving tasks: {ex.Message}", NotificationType.Error);
+            }
+        }
+        private void LoadTasksFromFile()
+        {
+            try
+            {
+                if (File.Exists(taskFilePath))
+                {
+                    using (StreamReader reader = new StreamReader(taskFilePath))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string[] parts = line.Split('|');
+                            if (parts.Length == 3)
+                            {
+                                string name = parts[0];
+                                DateTime dueDate = DateTime.Parse(parts[1]);
+                                bool isCompleted = bool.Parse(parts[2]);
+
+                                tasks.Add(new TaskItem(name, dueDate, isCompleted));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowNotification($"Error loading tasks: {ex.Message}", NotificationType.Error);
+            }
         }
 
         public enum NotificationType

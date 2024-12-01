@@ -34,7 +34,6 @@
             progressBar = new ProgressBar();
             monthCalendar = new MonthCalendar();
             lblProgress = new Label();
-            label1 = new Label();
             listViewTask = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
@@ -80,7 +79,7 @@
             // 
             // monthCalendar
             // 
-            monthCalendar.Location = new Point(121, 9);
+            monthCalendar.Location = new Point(100, 9);
             monthCalendar.Name = "monthCalendar";
             monthCalendar.TabIndex = 5;
             // 
@@ -94,16 +93,6 @@
             lblProgress.Size = new Size(89, 25);
             lblProgress.TabIndex = 6;
             lblProgress.Text = "Progress:";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(11, 9);
-            label1.Margin = new Padding(2, 0, 2, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(41, 15);
-            label1.TabIndex = 15;
-            label1.Text = "Profile";
             // 
             // listViewTask
             // 
@@ -170,7 +159,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(11, 74);
+            button2.Location = new Point(11, 50);
             button2.Margin = new Padding(2);
             button2.Name = "button2";
             button2.Size = new Size(78, 20);
@@ -200,11 +189,11 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(15, 43);
+            label2.Location = new Point(12, 24);
             label2.Name = "label2";
-            label2.Size = new Size(38, 15);
+            label2.Size = new Size(36, 15);
             label2.TabIndex = 41;
-            label2.Text = "label2";
+            label2.Text = "User: ";
             // 
             // btnEdit
             // 
@@ -239,7 +228,6 @@
             Controls.Add(button1);
             Controls.Add(textBox1);
             Controls.Add(listViewTask);
-            Controls.Add(label1);
             Controls.Add(lblProgress);
             Controls.Add(monthCalendar);
             Controls.Add(progressBar);
@@ -260,7 +248,6 @@
         private ProgressBar progressBar;
         private MonthCalendar monthCalendar;
         private Label lblProgress;
-        private Label label1;
         private ListView listViewTask;
         private TextBox textBox1;
         private Button button1;

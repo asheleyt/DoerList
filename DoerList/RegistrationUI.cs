@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System;
+using System.Windows.Forms;
+
 namespace DoerList
 {
     public partial class RegistrationUI : Form
@@ -19,28 +22,35 @@ namespace DoerList
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            string username = txtBoxUsername.Text;
+            string username = txtBoxUsername.Text.Trim();
             string password = txtBoxPassword.Text;
             string confirmPassword = txtBoxCfmPassword.Text;
 
-
-            if (username == null || password = null || confirmPassword == null)
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("All fields are required.");
+                MessageBox.Show("All fields are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (password != confirmPassword)
             {
-                MessageBox.Show("Passwords do not match. Please try again.");
+                MessageBox.Show("Passwords do not match. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            MessageBox.Show("Registration successful!");
 
-            
-            txtBoxUsername.Text = null;
-            txtBoxPassword.Text = null;
-            txtBoxCfmPassword.Text = null;
+            if (FileDatabaseHelper.RegisterUser(username, password))
+            {
+                MessageBox.Show("Registration successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtBoxUsername.Clear();
+                txtBoxPassword.Clear();
+                txtBoxCfmPassword.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Username already exists. Please try a different username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }
+
+

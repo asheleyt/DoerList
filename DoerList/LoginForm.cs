@@ -15,24 +15,23 @@ namespace DoerList
         public LoginForm()
         {
             InitializeComponent();
+            FileDatabaseHelper.Initialize(); // Initialize the file database
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            String username = txtBoxUsername.Text;
-            String password = txtBoxPassword.Text;
+            string username = txtBoxUsername.Text;
+            string password = txtBoxPassword.Text;
 
-            if (username == "User" && password == "password")
+            if (FileDatabaseHelper.ValidateUser(username, password))
             {
-                MainForm mainForm = new MainForm();
+                MainForm mainForm = new MainForm(username);
                 mainForm.Show();
-
-
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Invalid username or password. Please try again.");
+                MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -40,17 +39,7 @@ namespace DoerList
         {
             RegistrationUI registrationUI = new RegistrationUI();
             registrationUI.Show();
-
             this.Close();
-
         }
-
-
-
-
-
-
-
-
     }
 }

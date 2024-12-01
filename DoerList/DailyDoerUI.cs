@@ -8,19 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DoerList.MainForm;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace DoerList
 {
     public partial class DailyDoerUI : Form
     {
-
+        private string loggedInUsername;
         private List<TaskItem> dailyTasks;
         public event EventHandler TaskUpdated;
-
-        public DailyDoerUI()
+            
+        public DailyDoerUI(string username)
         {
             InitializeComponent();
             dailyTasks = new List<TaskItem>(); // Initialize an empty list if needed
+            loggedInUsername = username;
+            
         }
 
         // Existing constructor with parameters
@@ -40,20 +44,23 @@ namespace DoerList
 
         private void DailyDoerUI_Load(object sender, EventArgs e)
         {
+            dailyTasks = FileDatabaseHelper.LoadTasks(loggedInUsername);
             UpdateTaskList();
         }
 
         private void btnAddTask_Click(object sender, EventArgs e)
         {
             string newTask = Microsoft.VisualBasic.Interaction.InputBox(
-                "Enter Task Details:", "Add Daily Task", "", -1, -1);
+        "Enter Task Details:", "Add Daily Task", "", -1, -1);
 
             if (!string.IsNullOrWhiteSpace(newTask))
             {
                 DateTime dueDate = DateTime.Today.AddDays(1);
-                dailyTasks.Add(new TaskItem(newTask, dueDate));
+                var task = new TaskItem(newTask, dueDate);
+                dailyTasks.Add(task);
+
+                FileDatabaseHelper.SaveTask(loggedInUsername, task);
                 UpdateTaskList();
-           
             }
             else
             {
@@ -67,10 +74,12 @@ namespace DoerList
             {
                 foreach (ListViewItem selectedItem in listViewDailyTasks.SelectedItems)
                 {
-                    dailyTasks.RemoveAll(t => t.Name == selectedItem.Text);
-                    listViewDailyTasks.Items.Remove(selectedItem);
+                    string taskName = selectedItem.Text;
+                    FileDatabaseHelper.RemoveTask(loggedInUsername, taskName);
+                    dailyTasks.RemoveAll(t => t.Name == taskName);
                 }
-        
+
+                UpdateTaskList();
             }
             else
             {
@@ -95,6 +104,7 @@ namespace DoerList
             {
                 ListViewItem item = new ListViewItem(task.Name);
                 item.SubItems.Add(task.DueDate.ToShortDateString());
+                item.SubItems.Add(task.IsCompleted ? "Yes" : "No");
                 listViewDailyTasks.Items.Add(item);
             }
         }
