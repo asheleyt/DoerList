@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -23,12 +24,12 @@ namespace DoerList
         private void btnRegister_Click(object sender, EventArgs e)
         {
             string username = txtBoxUsername.Text.Trim();
-            string password = txtBoxPassword.Text;
-            string confirmPassword = txtBoxCfmPassword.Text;
+            string password = txtBoxPassword.Text.Trim();
+            string confirmPassword = txtBoxCfmPassword.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("All fields are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill up the fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -47,7 +48,7 @@ namespace DoerList
             }
             else
             {
-                MessageBox.Show("Username already exists. Please try a different username.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

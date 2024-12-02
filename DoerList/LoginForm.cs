@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,13 +16,13 @@ namespace DoerList
         public LoginForm()
         {
             InitializeComponent();
-            FileDatabaseHelper.Initialize(); // Initialize the file database
+            FileDatabaseHelper.Initialize();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtBoxUsername.Text;
-            string password = txtBoxPassword.Text;
+            string username = txtBoxUsername.Text.Trim();
+            string password = txtBoxPassword.Text.Trim();
 
             if (FileDatabaseHelper.ValidateUser(username, password))
             {

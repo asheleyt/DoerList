@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,16 @@ namespace DoerList
 
         public static bool RegisterUser(string username, string password)
         {
+            if (!IsValidPassword(password))
+            {
+                System.Windows.Forms.MessageBox.Show(
+                    "Password must be at least 8 characters long, with letter, number and special character",
+                    "Invalid Password",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
             foreach (var line in File.ReadLines(usersFile))
             {
                 var parts = line.Split('|');
@@ -43,6 +54,49 @@ namespace DoerList
                     return true;
             }
             return false;
+        }
+
+        public static bool ChangePassword(string username, string currentPassword, string newPassword)
+        {
+            var lines = File.ReadAllLines(usersFile);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var parts = lines[i].Split('|');
+                if (parts[0] == username && parts[1] == currentPassword)
+                {
+                    if (!IsValidPassword(newPassword))
+                    {
+                        System.Windows.Forms.MessageBox.Show(
+                            "Password must be at least 8 characters long, with letter, number and special character",
+                            "Password must be at least 8 characters long, with letter, number and special character",
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        return false;
+                    }
+
+                    lines[i] = $"{username}|{newPassword}";
+                    File.WriteAllLines(usersFile, lines);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsValidPassword(string password)
+        {
+            if (password.Length < 8)
+                return false;
+
+            bool hasLetter = false, hasDigit = false, hasSpecial = false;
+            foreach (char ch in password)
+            {
+                if (char.IsLetter(ch)) hasLetter = true;
+                if (char.IsDigit(ch)) hasDigit = true;
+                if (!char.IsLetterOrDigit(ch)) hasSpecial = true;
+            }
+
+            return hasLetter && hasDigit && hasSpecial;
         }
 
         public static List<TaskItem> LoadTasks(string username)
@@ -81,5 +135,4 @@ namespace DoerList
             File.WriteAllLines(tasksFile, lines);
         }
     }
-
 }

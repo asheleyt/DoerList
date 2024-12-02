@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,46 +13,40 @@ namespace DoerList
 {
     public partial class PassForm : Form
     {
-        public PassForm()
+        private readonly string loggedInUsername;
+
+        public PassForm(string username)
         {
             InitializeComponent();
+            loggedInUsername = username;
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
         {
-            string currentPassword = txtBoxCurrentPassword.Text;
-            string newPassword = txtBoxNewPassword.Text;
-            string confirmPassword = txtBoxConfirmPassword.Text;
+            string currentPassword = txtBoxCurrentPassword.Text.Trim();
+            string newPassword = txtBoxNewPassword.Text.Trim();
+            string confirmPassword = txtBoxConfirmPassword.Text.Trim();
 
-            
-            if (currentPassword == null || newPassword == null || confirmPassword == null)
+            if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
             {
                 MessageBox.Show("All fields are required.");
                 return;
             }
 
-            string actualCurrentPassword = "oldpassword";
-
-            if (currentPassword != actualCurrentPassword)
-            {
-                MessageBox.Show("Current password is incorrect.");
-                return;
-            }
-
             if (newPassword != confirmPassword)
             {
-                MessageBox.Show("New passwords do not match. Please try again.");
+                MessageBox.Show("New passwords do not match.");
                 return;
             }
 
-            
-            MessageBox.Show("Password changed successfully!");
-
-
-            txtBoxCurrentPassword.Text = null;
-            txtBoxNewPassword.Text = null;
-            txtBoxConfirmPassword.Text = null;
-        
-    }
+            if (FileDatabaseHelper.ChangePassword(loggedInUsername, currentPassword, newPassword))
+            {
+                MessageBox.Show("Password changed successfully!");
+            }
+            else
+            {
+                MessageBox.Show("Failed to change password. Please check your current password and try again.");
+            }
+        }
     }
 }

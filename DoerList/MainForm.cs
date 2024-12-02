@@ -16,7 +16,7 @@ namespace DoerList
         private PopupNotifier notification;
         private string loggedInUsername;
         private string taskFilePath = "tasks.txt";
-        public MainForm(string username)
+        public MainForm()
         {
             InitializeComponent();
             notification = new PopupNotifier();
