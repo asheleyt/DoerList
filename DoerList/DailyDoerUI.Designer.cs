@@ -38,7 +38,9 @@
             label5 = new Label();
             label3 = new Label();
             listViewDailyTasks = new ListView();
+            numericUpDown2 = new NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             SuspendLayout();
             // 
             // label4
@@ -120,9 +122,17 @@
             listViewDailyTasks.UseCompatibleStateImageBehavior = false;
             listViewDailyTasks.View = View.Details;
             // 
+            // numericUpDown2
+            // 
+            numericUpDown2.Location = new Point(420, 76);
+            numericUpDown2.Name = "numericUpDown2";
+            numericUpDown2.Size = new Size(120, 23);
+            numericUpDown2.TabIndex = 6;
+            // 
             // DailyDoerUI
             // 
             ClientSize = new Size(569, 333);
+            Controls.Add(numericUpDown2);
             Controls.Add(listViewDailyTasks);
             Controls.Add(label4);
             Controls.Add(txtTask);
@@ -132,6 +142,7 @@
             Name = "DailyDoerUI";
             Text = "Daily Doers";
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -148,5 +159,6 @@
         private Label label5;
         private Label label3;
         private ListView listViewDailyTasks;
+        private NumericUpDown numericUpDown2;
     }
 }

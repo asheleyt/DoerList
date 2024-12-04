@@ -1,18 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace DoerList
+﻿namespace DoerList
 {
     public partial class LoginForm : Form
     {
+        public string Username { get; private set; }
         public LoginForm()
         {
             InitializeComponent();
@@ -26,8 +16,8 @@ namespace DoerList
 
             if (FileDatabaseHelper.ValidateUser(username, password))
             {
-                MainForm mainForm = new MainForm(username);
-                mainForm.Show();
+                Username = username; 
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
@@ -39,8 +29,23 @@ namespace DoerList
         private void btnRegister_Click(object sender, EventArgs e)
         {
             RegistrationUI registrationUI = new RegistrationUI();
-            registrationUI.Show();
-            this.Close();
+            registrationUI.ShowDialog();
+        }
+
+        private void BtnChangePass_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtBoxUsername.Text))
+            {
+                string username = txtBoxUsername.Text.Trim();
+                PassForm passForm = new PassForm(username);
+                passForm.ShowDialog(); 
+            }
+            else
+            {
+                MessageBox.Show("Please enter your username before changing the password.",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
         }
     }
 }

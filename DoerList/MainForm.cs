@@ -16,11 +16,13 @@ namespace DoerList
         private PopupNotifier notification;
         private string loggedInUsername;
         private string taskFilePath = "tasks.txt";
-        public MainForm()
+        public MainForm(String username)
         {
             InitializeComponent();
-            notification = new PopupNotifier();
+
             loggedInUsername = username;
+            UpdateTaskSummary();
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -35,9 +37,16 @@ namespace DoerList
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            notification = new PopupNotifier
+            {
+                TitleText = "Task Manager",
+                Delay = 5000
+            };
+
             LoadTasksFromFile();
             UpdateTaskList();
             UpdateProgressBar();
+            HighlightTaskDates();
             StartTaskReminderTimer();
         }
 
@@ -45,7 +54,7 @@ namespace DoerList
         {
             System.Windows.Forms.Timer taskReminderTimer = new System.Windows.Forms.Timer
             {
-                Interval = 60000 // 1 minute
+                Interval = 60000 
             };
             taskReminderTimer.Tick += TaskReminderTimer_Tick;
             taskReminderTimer.Start();
@@ -59,6 +68,10 @@ namespace DoerList
                     if (task.DueDate.Date == DateTime.Today.AddDays(1))
                     {
                         ShowNotification($"Task '{task.Name}' is due tomorrow!", NotificationType.Warning);
+                    }
+                    else if (task.DueDate.Date == DateTime.Today && task.DueDate.Hour == DateTime.Now.Hour)
+                    {
+                        ShowNotification($"Task '{task.Name}' is due soon at {task.DueDate.ToShortTimeString()}!", NotificationType.Info);
                     }
                     else if (task.DueDate.Date < DateTime.Today)
                     {
@@ -74,7 +87,7 @@ namespace DoerList
             DailyDoerUI dailyTaskForm = new DailyDoerUI(tasks);
             dailyTaskForm.TaskUpdated += (s, args) =>
             {
-                SaveTasksToFile(); 
+                SaveTasksToFile();
                 UpdateTaskList();
                 UpdateProgressBar();
                 HighlightTaskDates();
@@ -91,6 +104,7 @@ namespace DoerList
                 {
                     ListViewItem item = new ListViewItem(task.Name);
                     item.SubItems.Add(task.DueDate.ToShortDateString());
+                    item.SubItems.Add(task.DueTime.ToString(@"hh\:mm")); 
                     listViewTask.Items.Add(item);
                 }
             }
@@ -98,12 +112,19 @@ namespace DoerList
         private void UpdateProgressBar()
         {
             int totalTasks = tasks.Count;
-            int completedTasks = tasks.FindAll(t => t.IsCompleted).Count;
+            int completedTasks = tasks.Count(t => t.IsCompleted);
 
             progressBar.Value = totalTasks > 0 ? (completedTasks * 100) / totalTasks : 0;
+            lblCompletedTasks.Text = $"Progress: {progressBar.Value}%";
+        }
+        private void UpdatePendingTasks()
+        {
+            int pendingTasks = tasks.Count(t => !t.IsCompleted);
+            lblPendingTasks.Text = $"Pending Tasks: {pendingTasks}";
         }
         private void HighlightTaskDates()
         {
+            monthCalendar.RemoveAllBoldedDates();
             foreach (var task in tasks)
             {
                 if (!task.IsCompleted)
@@ -117,17 +138,30 @@ namespace DoerList
         private void btnAddTaskMain_Click(object sender, EventArgs e)
         {
             string newTask = Microsoft.VisualBasic.Interaction.InputBox(
-                "Enter Task Details:", "Add Task", "", -1, -1);
+        "Enter Task Details:", "Add Task", "", -1, -1);
 
             if (!string.IsNullOrWhiteSpace(newTask))
             {
-                DateTime dueDate = DateTime.Today.AddDays(2);
-                tasks.Add(new TaskItem(newTask, dueDate));
-                SaveTasksToFile(); 
-                UpdateTaskList();
-                HighlightTaskDates();
+                string dateInput = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Enter Due Date (YYYY-MM-DD):", "Add Task", DateTime.Today.ToString("yyyy-MM-dd"), -1, -1);
 
-                ShowNotification($"Task '{newTask}' has been added successfully.", NotificationType.Success);
+         
+                string timeInput = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Enter Due Time (HH:mm):", "Add Task", DateTime.Now.ToString("HH:mm"), -1, -1);
+
+                if (DateTime.TryParse(dateInput, out DateTime dueDate) && TimeSpan.TryParse(timeInput, out TimeSpan dueTime))
+                {
+                    tasks.Add(new TaskItem(newTask, dueDate, dueTime));
+                    SaveTasksToFile();
+                    UpdateTaskList();
+                    HighlightTaskDates();
+
+                    ShowNotification($"Task '{newTask}' has been added successfully.", NotificationType.Success);
+                }
+                else
+                {
+                    ShowNotification("Invalid date or time format. Task not added.", NotificationType.Error);
+                }
             }
             else
             {
@@ -144,7 +178,7 @@ namespace DoerList
                     tasks.RemoveAll(t => t.Name == selectedItem.Text);
                     listViewTask.Items.Remove(selectedItem);
                 }
-                SaveTasksToFile(); 
+                SaveTasksToFile();
                 ShowNotification("Selected task(s) removed successfully!", NotificationType.Success);
                 UpdateProgressBar();
             }
@@ -167,7 +201,7 @@ namespace DoerList
                 if (confirmResult == DialogResult.Yes)
                 {
                     tasks.Clear();
-                    SaveTasksToFile(); 
+                    SaveTasksToFile();
                     UpdateTaskList();
                     UpdateProgressBar();
                     ShowNotification("All tasks cleared successfully!", NotificationType.Success);
@@ -292,21 +326,71 @@ namespace DoerList
         {
             public string Name { get; set; }
             public DateTime DueDate { get; set; }
+            public TimeSpan DueTime { get; set; } 
             public bool IsCompleted { get; set; }
 
             public TaskItem(string name, DateTime dueDate, bool isCompleted = false)
             {
                 Name = name;
                 DueDate = dueDate;
+                DueTime = dueTime;
                 IsCompleted = isCompleted;
             }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            DailyDoerUI dailyDoerUI = new DailyDoerUI();
+            DailyDoerUI dailyDoerUI = new DailyDoerUI(tasks);
             dailyDoerUI.ShowDialog();
-            this.Close();
+            this.Hide();
         }
+        private void DisplayDailySummary()
+        {
+            int pendingTasks = tasks.Count(t => !t.IsCompleted && t.DueDate.Date == DateTime.Today);
+            int completedTasks = tasks.Count(t => t.IsCompleted && t.DueDate.Date == DateTime.Today);
+
+            ShowNotification($"Today's Summary:\nPending Tasks: {pendingTasks}\nCompleted Tasks: {completedTasks}", NotificationType.Info);
+        }
+
+        private void MarkAsCompleted_Click(object sender, EventArgs e)
+        {
+            if (listViewTask.SelectedItems.Count > 0)
+            {
+                foreach (ListViewItem selectedItem in listViewTask.SelectedItems)
+                {
+                    var task = tasks.FirstOrDefault(t => t.Name == selectedItem.Text);
+                    if (task != null)
+                    {
+                        task.IsCompleted = true;
+                    }
+                }
+                SaveTasksToFile();
+                UpdateTaskList();
+                UpdateProgressBar();
+                UpdatePendingTasks();
+                ShowNotification("Selected task(s) marked as completed!", NotificationType.Success);
+            }
+            else
+            {
+                ShowNotification("Please select a task to mark as completed!", NotificationType.Warning);
+            }
+        }
+
+        private void UpdateTaskSummary()
+        {
+  
+            int totalTasks = tasks.Count;
+            int completedTasks = tasks.Count(t => t.IsCompleted);
+            int pendingTasks = totalTasks - completedTasks;
+
+            
+            lblTotalTasks.Text = $"Total Tasks: {totalTasks}";
+            lblCompletedTasks.Text = $"Completed Tasks: {completedTasks}";
+            lblPendingTasks.Text = $"Pending Tasks: {pendingTasks}";
+        }
+
+       
+
+
     }
 }

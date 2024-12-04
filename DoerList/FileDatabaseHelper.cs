@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static DoerList.MainForm;
 
 namespace DoerList
@@ -27,7 +25,7 @@ namespace DoerList
             if (!IsValidPassword(password))
             {
                 System.Windows.Forms.MessageBox.Show(
-                    "Password must be at least 8 characters long, with letter, number and special character",
+                    "Password must be at least 8 characters long, with a letter, number, and special character.",
                     "Invalid Password",
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Warning);
@@ -67,8 +65,8 @@ namespace DoerList
                     if (!IsValidPassword(newPassword))
                     {
                         System.Windows.Forms.MessageBox.Show(
-                            "Password must be at least 8 characters long, with letter, number and special character",
-                            "Password must be at least 8 characters long, with letter, number and special character",
+                            "Password must be at least 8 characters long, with a letter, number, and special character.",
+                            "Invalid Password",
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Warning);
                         return false;
@@ -83,7 +81,7 @@ namespace DoerList
             return false;
         }
 
-        private static bool IsValidPassword(string password)
+        public static bool IsValidPassword(string password)
         {
             if (password.Length < 8)
                 return false;
@@ -98,6 +96,7 @@ namespace DoerList
 
             return hasLetter && hasDigit && hasSpecial;
         }
+
 
         public static List<TaskItem> LoadTasks(string username)
         {

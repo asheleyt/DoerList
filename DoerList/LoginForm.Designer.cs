@@ -99,6 +99,7 @@
             BtnChangePass.TabIndex = 6;
             BtnChangePass.Text = "Change Password";
             BtnChangePass.UseVisualStyleBackColor = true;
+            BtnChangePass.Click += BtnChangePass_Click;
             // 
             // LoginForm
             // 

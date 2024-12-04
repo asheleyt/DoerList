@@ -33,20 +33,24 @@
             btnRemoveTaskMain = new Button();
             progressBar = new ProgressBar();
             monthCalendar = new MonthCalendar();
-            lblProgress = new Label();
+            lblCompletedTasks = new Label();
             listViewTask = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
-            textBox1 = new TextBox();
             button1 = new Button();
             btnClearAllMain = new Button();
             lblPendingTasks = new Label();
             button2 = new Button();
             numericUpDown1 = new NumericUpDown();
-            label69 = new Label();
             label2 = new Label();
             btnEdit = new Button();
             UpdateDailyDoersProgress = new ProgressBar();
+            datePickerTask = new DateTimePicker();
+            timePickerTaskTime = new DateTimePicker();
+            label1 = new Label();
+            label3 = new Label();
+            MarkAsCompleted = new Button();
+            lblTotalTasks = new Label();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
@@ -83,16 +87,16 @@
             monthCalendar.Name = "monthCalendar";
             monthCalendar.TabIndex = 5;
             // 
-            // lblProgress
+            // lblCompletedTasks
             // 
-            lblProgress.AccessibleRole = AccessibleRole.None;
-            lblProgress.AutoSize = true;
-            lblProgress.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblProgress.Location = new Point(495, 78);
-            lblProgress.Name = "lblProgress";
-            lblProgress.Size = new Size(89, 25);
-            lblProgress.TabIndex = 6;
-            lblProgress.Text = "Progress:";
+            lblCompletedTasks.AccessibleRole = AccessibleRole.None;
+            lblCompletedTasks.AutoSize = true;
+            lblCompletedTasks.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCompletedTasks.Location = new Point(495, 80);
+            lblCompletedTasks.Name = "lblCompletedTasks";
+            lblCompletedTasks.Size = new Size(89, 25);
+            lblCompletedTasks.TabIndex = 6;
+            lblCompletedTasks.Text = "Progress:";
             // 
             // listViewTask
             // 
@@ -114,20 +118,12 @@
             columnHeader2.Text = "Due Date";
             columnHeader2.Width = 150;
             // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(24, 204);
-            textBox1.Margin = new Padding(2);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(106, 23);
-            textBox1.TabIndex = 18;
-            // 
             // button1
             // 
             button1.BackgroundImage = (Image)resources.GetObject("button1.BackgroundImage");
             button1.BackgroundImageLayout = ImageLayout.Zoom;
             button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(133, 197);
+            button1.Location = new Point(53, 214);
             button1.Margin = new Padding(2);
             button1.Name = "button1";
             button1.Size = new Size(36, 32);
@@ -175,17 +171,6 @@
             numericUpDown1.Size = new Size(126, 23);
             numericUpDown1.TabIndex = 27;
             // 
-            // label69
-            // 
-            label69.AutoSize = true;
-            label69.Font = new Font("Segoe UI", 14.25F);
-            label69.Location = new Point(485, 146);
-            label69.Margin = new Padding(2, 0, 2, 0);
-            label69.Name = "label69";
-            label69.Size = new Size(99, 25);
-            label69.TabIndex = 23;
-            label69.Text = "DailyDoer:";
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -197,7 +182,7 @@
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(485, 174);
+            btnEdit.Location = new Point(363, 24);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(99, 32);
             btnEdit.TabIndex = 42;
@@ -207,28 +192,89 @@
             // 
             // UpdateDailyDoersProgress
             // 
-            UpdateDailyDoersProgress.Location = new Point(508, 43);
+            UpdateDailyDoersProgress.Location = new Point(508, 50);
             UpdateDailyDoersProgress.Name = "UpdateDailyDoersProgress";
             UpdateDailyDoersProgress.Size = new Size(209, 27);
             UpdateDailyDoersProgress.TabIndex = 43;
+            // 
+            // datePickerTask
+            // 
+            datePickerTask.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            datePickerTask.Format = DateTimePickerFormat.Custom;
+            datePickerTask.Location = new Point(577, 276);
+            datePickerTask.Name = "datePickerTask";
+            datePickerTask.Size = new Size(200, 23);
+            datePickerTask.TabIndex = 44;
+            // 
+            // timePickerTaskTime
+            // 
+            timePickerTaskTime.Location = new Point(577, 357);
+            timePickerTaskTime.Name = "timePickerTaskTime";
+            timePickerTaskTime.Size = new Size(200, 23);
+            timePickerTaskTime.TabIndex = 45;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(577, 246);
+            label1.Name = "label1";
+            label1.Size = new Size(44, 21);
+            label1.TabIndex = 46;
+            label1.Text = "Date";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(577, 323);
+            label3.Name = "label3";
+            label3.Size = new Size(46, 21);
+            label3.TabIndex = 47;
+            label3.Text = "Time";
+            // 
+            // MarkAsCompleted
+            // 
+            MarkAsCompleted.Location = new Point(272, 223);
+            MarkAsCompleted.Name = "MarkAsCompleted";
+            MarkAsCompleted.Size = new Size(75, 23);
+            MarkAsCompleted.TabIndex = 48;
+            MarkAsCompleted.Text = "Mark as Done";
+            MarkAsCompleted.UseVisualStyleBackColor = true;
+            MarkAsCompleted.Click += MarkAsCompleted_Click;
+            // 
+            // lblTotalTasks
+            // 
+            lblTotalTasks.AccessibleRole = AccessibleRole.None;
+            lblTotalTasks.AutoSize = true;
+            lblTotalTasks.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTotalTasks.Location = new Point(483, 161);
+            lblTotalTasks.Name = "lblTotalTasks";
+            lblTotalTasks.Size = new Size(101, 25);
+            lblTotalTasks.TabIndex = 49;
+            lblTotalTasks.Text = "Total Task: ";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(807, 426);
+            Controls.Add(lblTotalTasks);
+            Controls.Add(MarkAsCompleted);
+            Controls.Add(label3);
+            Controls.Add(label1);
+            Controls.Add(timePickerTaskTime);
+            Controls.Add(datePickerTask);
             Controls.Add(UpdateDailyDoersProgress);
             Controls.Add(btnEdit);
             Controls.Add(label2);
             Controls.Add(numericUpDown1);
-            Controls.Add(label69);
             Controls.Add(button2);
             Controls.Add(lblPendingTasks);
             Controls.Add(btnClearAllMain);
             Controls.Add(button1);
-            Controls.Add(textBox1);
             Controls.Add(listViewTask);
-            Controls.Add(lblProgress);
+            Controls.Add(lblCompletedTasks);
             Controls.Add(monthCalendar);
             Controls.Add(progressBar);
             Controls.Add(btnRemoveTaskMain);
@@ -247,9 +293,8 @@
         private Button btnRemoveTaskMain;
         private ProgressBar progressBar;
         private MonthCalendar monthCalendar;
-        private Label lblProgress;
+        private Label lblCompletedTasks;
         private ListView listViewTask;
-        private TextBox textBox1;
         private Button button1;
         private Button btnClearAllMain;
         private Label lblPendingTasks;
@@ -257,9 +302,14 @@
         private ColumnHeader columnHeader2;
         private Button button2;
         private NumericUpDown numericUpDown1;
-        private Label label69;
         private Label label2;
         private Button btnEdit;
         private ProgressBar UpdateDailyDoersProgress;
+        private DateTimePicker datePickerTask;
+        private DateTimePicker timePickerTaskTime;
+        private Label label1;
+        private Label label3;
+        private Button MarkAsCompleted;
+        private Label lblTotalTasks;
     }
 }

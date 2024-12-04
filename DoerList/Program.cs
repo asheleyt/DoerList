@@ -8,10 +8,17 @@ namespace DoerList
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Start with the login form
+            LoginForm loginForm = new LoginForm();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                // Pass the username from the login form to the main form
+                string username = loginForm.Username; // Add a property to LoginForm to expose the username
+                Application.Run(new MainForm(username));
+            }
         }
     }
 }

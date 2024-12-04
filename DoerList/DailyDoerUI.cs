@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static DoerList.MainForm;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
+﻿using static DoerList.MainForm;
 
 namespace DoerList
 {
@@ -18,13 +7,13 @@ namespace DoerList
         private string loggedInUsername;
         private List<TaskItem> dailyTasks;
         public event EventHandler TaskUpdated;
-            
+
         public DailyDoerUI(string username)
         {
             InitializeComponent();
             dailyTasks = new List<TaskItem>(); // Initialize an empty list if needed
             loggedInUsername = username;
-            
+
         }
 
         // Existing constructor with parameters
@@ -93,7 +82,7 @@ namespace DoerList
             if (checkBox != null && checkBox.Tag is TaskItem task)
             {
                 task.IsCompleted = checkBox.Checked;
-    
+
             }
         }
 
@@ -111,9 +100,9 @@ namespace DoerList
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            MainForm mainForm = new MainForm();
+            MainForm mainForm = new MainForm(loggedInUsername);
             mainForm.ShowDialog();
-            this.Close(); 
+            this.Hide();
         }
     }
 }
