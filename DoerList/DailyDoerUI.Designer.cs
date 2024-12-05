@@ -39,6 +39,10 @@
             label3 = new Label();
             listViewDailyTasks = new ListView();
             numericUpDown2 = new NumericUpDown();
+            btnAdd = new Button();
+            btnDelete = new Button();
+            btnEnable = new Button();
+            btnDisable = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
             SuspendLayout();
@@ -62,14 +66,14 @@
             // 
             // dateTimePicker1
             // 
-            dateTimePicker1.Location = new Point(340, 270);
+            dateTimePicker1.Location = new Point(342, 227);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(200, 23);
             dateTimePicker1.TabIndex = 3;
             // 
             // btnBack
             // 
-            btnBack.Location = new Point(359, 20);
+            btnBack.Location = new Point(482, 12);
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(75, 23);
             btnBack.TabIndex = 4;
@@ -84,6 +88,7 @@
             chkDaily.Size = new Size(129, 19);
             chkDaily.TabIndex = 5;
             chkDaily.Text = "Mark as Completed";
+            chkDaily.CheckedChanged += chkDaily_CheckedChanged;
             // 
             // numericUpDown1
             // 
@@ -124,14 +129,58 @@
             // 
             // numericUpDown2
             // 
-            numericUpDown2.Location = new Point(420, 76);
+            numericUpDown2.Location = new Point(342, 34);
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(120, 23);
             numericUpDown2.TabIndex = 6;
             // 
+            // btnAdd
+            // 
+            btnAdd.Location = new Point(342, 270);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(75, 23);
+            btnAdd.TabIndex = 7;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(423, 270);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(75, 23);
+            btnDelete.TabIndex = 8;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // btnEnable
+            // 
+            btnEnable.Location = new Point(482, 76);
+            btnEnable.Name = "btnEnable";
+            btnEnable.Size = new Size(75, 23);
+            btnEnable.TabIndex = 9;
+            btnEnable.Text = "Enable";
+            btnEnable.UseVisualStyleBackColor = true;
+            btnEnable.Click += btnEnable_Click;
+            // 
+            // btnDisable
+            // 
+            btnDisable.Location = new Point(482, 105);
+            btnDisable.Name = "btnDisable";
+            btnDisable.Size = new Size(75, 23);
+            btnDisable.TabIndex = 10;
+            btnDisable.Text = "Disable";
+            btnDisable.UseVisualStyleBackColor = true;
+            btnDisable.Click += btnDisable_Click;
+            // 
             // DailyDoerUI
             // 
             ClientSize = new Size(569, 333);
+            Controls.Add(btnDisable);
+            Controls.Add(btnEnable);
+            Controls.Add(btnDelete);
+            Controls.Add(btnAdd);
             Controls.Add(numericUpDown2);
             Controls.Add(listViewDailyTasks);
             Controls.Add(label4);
@@ -141,6 +190,7 @@
             Controls.Add(chkDaily);
             Name = "DailyDoerUI";
             Text = "Daily Doers";
+            Load += DailyDoerUI_Load;
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).EndInit();
             ResumeLayout(false);
@@ -160,5 +210,9 @@
         private Label label3;
         private ListView listViewDailyTasks;
         private NumericUpDown numericUpDown2;
+        private Button btnAdd;
+        private Button btnDelete;
+        private Button btnEnable;
+        private Button btnDisable;
     }
 }

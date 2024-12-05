@@ -12,10 +12,14 @@ namespace DoerList
 {
     public partial class MainForm : Form
     {
+        private List<TaskItem> DailyTasks = new List<TaskItem>();
         private List<TaskItem> tasks = new List<TaskItem>();
         private PopupNotifier notification;
         private string loggedInUsername;
         private string taskFilePath = "tasks.txt";
+
+        private bool isDailyDoerEnabled = true;
+
         public MainForm(String username)
         {
             InitializeComponent();
@@ -389,7 +393,33 @@ namespace DoerList
             lblPendingTasks.Text = $"Pending Tasks: {pendingTasks}";
         }
 
-       
+        private void OpenDailyDoerUI()
+        {
+            DailyDoerUI dailyDoerUI = new DailyDoerUI(tasks);
+            // Subscribe to the TasksUpdated event
+            dailyDoerUI.DailyTasksUpdated += DailyDoerUI_TasksUpdated;
+            dailyDoerUI.ShowDialog();
+        }
+
+        // Event handler to update the MainForm's ListView when tasks are updated
+        private void DailyDoerUI_TasksUpdated(List<TaskItem> updatedTasks)
+        {
+            DailyTasks = updatedTasks;
+            UpdateMainFormListView();
+        }
+
+        // Method to update the ListView in MainForm with the current tasks
+        private void UpdateMainFormListView()
+        {
+            lvDailyDoer.Items.Clear();
+            foreach (var task in DailyTasks)
+            {
+                ListViewItem item = new ListViewItem(task.Name);
+                item.SubItems.Add(task.DueDate.ToShortDateString());
+                item.SubItems.Add(task.IsCompleted ? "Yes" : "No");
+                lvDailyDoer.Items.Add(item);
+            }
+        }
 
 
     }

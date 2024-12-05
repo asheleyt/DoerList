@@ -51,6 +51,9 @@
             label3 = new Label();
             MarkAsCompleted = new Button();
             lblTotalTasks = new Label();
+            lvDailyDoer = new ListView();
+            columnHeader3 = new ColumnHeader();
+            columnHeader4 = new ColumnHeader();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
@@ -182,7 +185,7 @@
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(363, 24);
+            btnEdit.Location = new Point(251, 399);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(99, 32);
             btnEdit.TabIndex = 42;
@@ -254,11 +257,32 @@
             lblTotalTasks.TabIndex = 49;
             lblTotalTasks.Text = "Total Task: ";
             // 
+            // lvDailyDoer
+            // 
+            lvDailyDoer.Columns.AddRange(new ColumnHeader[] { columnHeader3, columnHeader4 });
+            lvDailyDoer.Location = new Point(49, 384);
+            lvDailyDoer.Margin = new Padding(2);
+            lvDailyDoer.Name = "lvDailyDoer";
+            lvDailyDoer.Size = new Size(197, 124);
+            lvDailyDoer.TabIndex = 50;
+            lvDailyDoer.UseCompatibleStateImageBehavior = false;
+            // 
+            // columnHeader3
+            // 
+            columnHeader3.Text = "Task";
+            columnHeader3.Width = 200;
+            // 
+            // columnHeader4
+            // 
+            columnHeader4.Text = "Due Date";
+            columnHeader4.Width = 150;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(807, 426);
+            ClientSize = new Size(807, 532);
+            Controls.Add(lvDailyDoer);
             Controls.Add(lblTotalTasks);
             Controls.Add(MarkAsCompleted);
             Controls.Add(label3);
@@ -311,5 +335,8 @@
         private Label label3;
         private Button MarkAsCompleted;
         private Label lblTotalTasks;
+        private ListView lvDailyDoer;
+        private ColumnHeader columnHeader3;
+        private ColumnHeader columnHeader4;
     }
 }
