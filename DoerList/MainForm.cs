@@ -18,11 +18,13 @@ namespace DoerList
         public DateTime DueDate { get; private set; }
         public TimeSpan DueTime { get; private set; }
 
+
         private List<TaskItem> tasks = new List<TaskItem>();
         private PopupNotifier notification;
         private string loggedInUsername;
         private string taskFilePath = "tasks.txt";
         private System.Windows.Forms.Timer taskTimer;
+
         public MainForm(String username)
         {
             InitializeComponent();
@@ -66,6 +68,7 @@ namespace DoerList
 
             listViewTask.FullRowSelect = true;
             listViewTask.GridLines = true;
+
         }
 
         private void StartTaskReminderTimer()
@@ -97,20 +100,6 @@ namespace DoerList
                     }
                 }
             }
-        }
-
-
-        private void btnMainToDaily_Click(object sender, EventArgs e)
-        {
-            DailyDoerUI dailyTaskForm = new DailyDoerUI(tasks);
-            dailyTaskForm.TaskUpdated += (s, args) =>
-            {
-                SaveTasksToFile();
-                UpdateTaskList();
-                UpdateProgressBar();
-                HighlightTaskDates();
-            };
-            dailyTaskForm.ShowDialog();
         }
 
         private void UpdateTaskList()
@@ -406,13 +395,6 @@ namespace DoerList
             }
 
         }
-
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            DailyDoerUI dailyDoerUI = new DailyDoerUI(tasks);
-            dailyDoerUI.ShowDialog();
-            this.Hide();
-        }
         private void DisplayDailySummary()
         {
             int pendingTasks = tasks.Count(t => !t.IsCompleted && t.DueDate.Date == DateTime.Today);
@@ -541,7 +523,15 @@ namespace DoerList
                 listItem.SubItems.Add(task.DueTime.ToString(@"hh\:mm"));
                 listViewTask.Items.Add(listItem);
             }
-
+            foreach (var task in tasks)
+            {
+                if (!task.IsCompleted && task.DueDate.Date == DateTime.Today)
+                {
+                    ListViewItem listItem = new ListViewItem(task.Name);
+                    listItem.SubItems.Add(task.DueDate.ToShortDateString());
+                    listItem.SubItems.Add(task.DueTime.ToString(@"hh\:mm"));
+                }
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -605,8 +595,5 @@ namespace DoerList
             Debug.WriteLine($"Tasks: {tasks.Count}, Completed: {tasks.Count(t => t.IsCompleted)}");
             UpdateProgressBar(); // Update to reflect changes
         }
-
-
-
     }
 }

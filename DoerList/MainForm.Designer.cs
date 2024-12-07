@@ -42,7 +42,6 @@
             button2 = new Button();
             numericUpDown1 = new NumericUpDown();
             label2 = new Label();
-            btnEdit = new Button();
             UpdateDailyDoersProgress = new ProgressBar();
             MarkAsCompleted = new Button();
             timer = new System.Windows.Forms.Timer(components);
@@ -167,16 +166,6 @@
             label2.TabIndex = 41;
             label2.Text = "User: ";
             // 
-            // btnEdit
-            // 
-            btnEdit.Location = new Point(363, 24);
-            btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(99, 32);
-            btnEdit.TabIndex = 42;
-            btnEdit.Text = "Edit Daily Doers";
-            btnEdit.UseVisualStyleBackColor = true;
-            btnEdit.Click += btnEdit_Click;
-            // 
             // UpdateDailyDoersProgress
             // 
             UpdateDailyDoersProgress.Location = new Point(508, 50);
@@ -223,12 +212,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(807, 426);
+            ClientSize = new Size(807, 391);
             Controls.Add(btnRefresh);
             Controls.Add(lblTotalTasks);
             Controls.Add(MarkAsCompleted);
             Controls.Add(UpdateDailyDoersProgress);
-            Controls.Add(btnEdit);
             Controls.Add(label2);
             Controls.Add(numericUpDown1);
             Controls.Add(button2);
@@ -263,7 +251,6 @@
         private Button button2;
         private NumericUpDown numericUpDown1;
         private Label label2;
-        private Button btnEdit;
         private ProgressBar UpdateDailyDoersProgress;
         private Button MarkAsCompleted;
         private System.Windows.Forms.Timer timer;
