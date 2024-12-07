@@ -34,6 +34,7 @@
             datePickerDueDate = new DateTimePicker();
             btnAddTask = new Button();
             btnCancel = new Button();
+            timePickerDueTime = new DateTimePicker();
             SuspendLayout();
             // 
             // label1
@@ -63,6 +64,8 @@
             // 
             // datePickerDueDate
             // 
+            datePickerDueDate.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            datePickerDueDate.Format = DateTimePickerFormat.Custom;
             datePickerDueDate.Location = new Point(146, 147);
             datePickerDueDate.Name = "datePickerDueDate";
             datePickerDueDate.Size = new Size(200, 23);
@@ -70,7 +73,7 @@
             // 
             // btnAddTask
             // 
-            btnAddTask.Location = new Point(83, 239);
+            btnAddTask.Location = new Point(83, 264);
             btnAddTask.Name = "btnAddTask";
             btnAddTask.Size = new Size(75, 23);
             btnAddTask.TabIndex = 4;
@@ -80,7 +83,7 @@
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(250, 239);
+            btnCancel.Location = new Point(256, 264);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 5;
@@ -88,11 +91,22 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // timePickerDueTime
+            // 
+            timePickerDueTime.CustomFormat = "HH:mm";
+            timePickerDueTime.Format = DateTimePickerFormat.Custom;
+            timePickerDueTime.Location = new Point(146, 196);
+            timePickerDueTime.Name = "timePickerDueTime";
+            timePickerDueTime.ShowUpDown = true;
+            timePickerDueTime.Size = new Size(200, 23);
+            timePickerDueTime.TabIndex = 45;
+            // 
             // AddTaskForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(508, 321);
+            Controls.Add(timePickerDueTime);
             Controls.Add(btnCancel);
             Controls.Add(btnAddTask);
             Controls.Add(datePickerDueDate);
@@ -114,5 +128,6 @@
         private DateTimePicker datePickerDueDate;
         private Button btnAddTask;
         private Button btnCancel;
+        private DateTimePicker timePickerDueTime;
     }
 }

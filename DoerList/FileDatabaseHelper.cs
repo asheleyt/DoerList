@@ -105,12 +105,14 @@ namespace DoerList
             foreach (var line in File.ReadLines(tasksFile))
             {
                 var parts = line.Split('|');
-                if (parts[0] == username)
+                if (parts.Length == 4) // Ensure the file matches the new format
                 {
-                    string taskName = parts[1];
-                    DateTime dueDate = DateTime.Parse(parts[2]);
+                    string name = parts[0];
+                    DateTime dueDate = DateTime.Parse(parts[1]);
+                    TimeSpan dueTime = TimeSpan.Parse(parts[2]);
                     bool isCompleted = bool.Parse(parts[3]);
-                    tasks.Add(new TaskItem(taskName, dueDate, isCompleted));
+
+                    tasks.Add(new TaskItem(name, dueDate, dueTime, isCompleted));
                 }
             }
 

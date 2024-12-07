@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             btnAddTaskMain = new Button();
             btnRemoveTaskMain = new Button();
@@ -35,8 +36,6 @@
             monthCalendar = new MonthCalendar();
             lblCompletedTasks = new Label();
             listViewTask = new ListView();
-            columnHeader1 = new ColumnHeader();
-            columnHeader2 = new ColumnHeader();
             button1 = new Button();
             btnClearAllMain = new Button();
             lblPendingTasks = new Label();
@@ -45,11 +44,9 @@
             label2 = new Label();
             btnEdit = new Button();
             UpdateDailyDoersProgress = new ProgressBar();
-            datePickerTask = new DateTimePicker();
-            timePickerTaskTime = new DateTimePicker();
-            label1 = new Label();
-            label3 = new Label();
             MarkAsCompleted = new Button();
+            timer = new System.Windows.Forms.Timer(components);
+            btnRefresh = new Button();
             lblTotalTasks = new Label();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
@@ -80,6 +77,7 @@
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(209, 27);
             progressBar.TabIndex = 4;
+            progressBar.Click += progressBar_Click;
             // 
             // monthCalendar
             // 
@@ -100,23 +98,12 @@
             // 
             // listViewTask
             // 
-            listViewTask.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
             listViewTask.Location = new Point(49, 256);
             listViewTask.Margin = new Padding(2);
             listViewTask.Name = "listViewTask";
             listViewTask.Size = new Size(402, 124);
             listViewTask.TabIndex = 17;
             listViewTask.UseCompatibleStateImageBehavior = false;
-            // 
-            // columnHeader1
-            // 
-            columnHeader1.Text = "Task";
-            columnHeader1.Width = 200;
-            // 
-            // columnHeader2
-            // 
-            columnHeader2.Text = "Due Date";
-            columnHeader2.Width = 150;
             // 
             // button1
             // 
@@ -197,42 +184,6 @@
             UpdateDailyDoersProgress.Size = new Size(209, 27);
             UpdateDailyDoersProgress.TabIndex = 43;
             // 
-            // datePickerTask
-            // 
-            datePickerTask.CustomFormat = "MM/dd/yyyy hh:mm tt";
-            datePickerTask.Format = DateTimePickerFormat.Custom;
-            datePickerTask.Location = new Point(577, 276);
-            datePickerTask.Name = "datePickerTask";
-            datePickerTask.Size = new Size(200, 23);
-            datePickerTask.TabIndex = 44;
-            // 
-            // timePickerTaskTime
-            // 
-            timePickerTaskTime.Location = new Point(577, 357);
-            timePickerTaskTime.Name = "timePickerTaskTime";
-            timePickerTaskTime.Size = new Size(200, 23);
-            timePickerTaskTime.TabIndex = 45;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(577, 246);
-            label1.Name = "label1";
-            label1.Size = new Size(44, 21);
-            label1.TabIndex = 46;
-            label1.Text = "Date";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(577, 323);
-            label3.Name = "label3";
-            label3.Size = new Size(46, 21);
-            label3.TabIndex = 47;
-            label3.Text = "Time";
-            // 
             // MarkAsCompleted
             // 
             MarkAsCompleted.Location = new Point(272, 223);
@@ -242,6 +193,20 @@
             MarkAsCompleted.Text = "Mark as Done";
             MarkAsCompleted.UseVisualStyleBackColor = true;
             MarkAsCompleted.Click += MarkAsCompleted_Click;
+            // 
+            // timer
+            // 
+            timer.Tick += timer_Tick;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.Location = new Point(100, 219);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(75, 23);
+            btnRefresh.TabIndex = 50;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = true;
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // lblTotalTasks
             // 
@@ -259,12 +224,9 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(807, 426);
+            Controls.Add(btnRefresh);
             Controls.Add(lblTotalTasks);
             Controls.Add(MarkAsCompleted);
-            Controls.Add(label3);
-            Controls.Add(label1);
-            Controls.Add(timePickerTaskTime);
-            Controls.Add(datePickerTask);
             Controls.Add(UpdateDailyDoersProgress);
             Controls.Add(btnEdit);
             Controls.Add(label2);
@@ -298,18 +260,14 @@
         private Button button1;
         private Button btnClearAllMain;
         private Label lblPendingTasks;
-        private ColumnHeader columnHeader1;
-        private ColumnHeader columnHeader2;
         private Button button2;
         private NumericUpDown numericUpDown1;
         private Label label2;
         private Button btnEdit;
         private ProgressBar UpdateDailyDoersProgress;
-        private DateTimePicker datePickerTask;
-        private DateTimePicker timePickerTaskTime;
-        private Label label1;
-        private Label label3;
         private Button MarkAsCompleted;
+        private System.Windows.Forms.Timer timer;
+        private Button btnRefresh;
         private Label lblTotalTasks;
     }
 }

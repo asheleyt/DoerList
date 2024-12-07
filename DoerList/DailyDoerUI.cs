@@ -45,7 +45,10 @@ namespace DoerList
             if (!string.IsNullOrWhiteSpace(newTask))
             {
                 DateTime dueDate = DateTime.Today.AddDays(1);
-                var task = new TaskItem(newTask, dueDate);
+                TimeSpan defaultDueTime = TimeSpan.FromHours(9); // Default to 9:00 AM
+                bool isCompleted = false;
+
+                var task = new TaskItem(newTask, dueDate, defaultDueTime, isCompleted);
                 dailyTasks.Add(task);
 
                 FileDatabaseHelper.SaveTask(loggedInUsername, task);

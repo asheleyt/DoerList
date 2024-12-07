@@ -124,7 +124,7 @@
             // 
             // numericUpDown2
             // 
-            numericUpDown2.Location = new Point(420, 76);
+            numericUpDown2.Location = new Point(408, 84);
             numericUpDown2.Name = "numericUpDown2";
             numericUpDown2.Size = new Size(120, 23);
             numericUpDown2.TabIndex = 6;
