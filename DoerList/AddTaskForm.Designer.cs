@@ -35,6 +35,7 @@
             btnAddTask = new Button();
             btnCancel = new Button();
             timePickerDueTime = new DateTimePicker();
+            label3 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -101,11 +102,21 @@
             timePickerDueTime.Size = new Size(200, 23);
             timePickerDueTime.TabIndex = 45;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(64, 202);
+            label3.Name = "label3";
+            label3.Size = new Size(63, 15);
+            label3.TabIndex = 46;
+            label3.Text = "Due Time: ";
+            // 
             // AddTaskForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(508, 321);
+            Controls.Add(label3);
             Controls.Add(timePickerDueTime);
             Controls.Add(btnCancel);
             Controls.Add(btnAddTask);
@@ -129,5 +140,6 @@
         private Button btnAddTask;
         private Button btnCancel;
         private DateTimePicker timePickerDueTime;
+        private Label label3;
     }
 }

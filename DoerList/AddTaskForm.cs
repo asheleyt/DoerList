@@ -30,16 +30,14 @@ namespace DoerList
                 return;
             }
 
-            // Set properties
+
             TaskName = txtTaskName.Text.Trim();
             DueDate = datePickerDueDate.Value;
             DueTime = timePickerDueTime.Value.TimeOfDay;
 
-            DialogResult = DialogResult.OK; // Indicate successful input
+            DialogResult = DialogResult.OK; 
             Close();
         }
-    
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
           

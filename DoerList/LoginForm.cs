@@ -17,12 +17,13 @@
             if (FileDatabaseHelper.ValidateUser(username, password))
             {
                 Username = username; 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                this.DialogResult = DialogResult.OK; 
+                this.Hide(); 
             }
             else
             {
-                MessageBox.Show("Invalid username or password. Please try again.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Invalid username or password. Please try again.",
+                                "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

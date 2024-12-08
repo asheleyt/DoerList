@@ -24,7 +24,7 @@ namespace DoerList
         private string loggedInUsername;
         private string taskFilePath = "tasks.txt";
         private System.Windows.Forms.Timer taskTimer;
-
+        private string currentUsername;
         public MainForm(String username)
         {
             InitializeComponent();
@@ -32,7 +32,8 @@ namespace DoerList
             loggedInUsername = username;
             UpdateTaskSummary();
             taskFilePath = Path.Combine(Application.StartupPath, "tasks.txt");
-            
+            currentUsername = username;
+            lblUser.Text = $"User: {currentUsername}";
 
         }
 
@@ -68,6 +69,8 @@ namespace DoerList
 
             listViewTask.FullRowSelect = true;
             listViewTask.GridLines = true;
+
+        
 
         }
 
@@ -126,36 +129,45 @@ namespace DoerList
 
             progressBar.Value = Math.Min(progressValue, 100);
             lblCompletedTasks.Text = $"Completed: {completedTasks}/{totalTasks}";
-           
+
             Debug.WriteLine($"Progress Updated: Total={totalTasks}, Completed={completedTasks}, Progress={progressValue}%");
 
             foreach (var task in tasks.ToList())
             {
-                // Notify 5 minutes before the due time
+
                 if (!task.IsCompleted &&
                     task.DueDate.Date == currentTime.Date &&
                     task.DueTime - currentTime.TimeOfDay <= TimeSpan.FromMinutes(5) &&
                     !task.Notified)
                 {
                     ShowNotification($"Task Due Soon: {task.Name}", NotificationType.Warning);
-                    task.Notified = true; // Mark as notified to avoid repeated notifications
+                    task.Notified = true; 
                 }
 
-                // Mark task as completed and update progress if the due time has passed
+            
                 if (!task.IsCompleted &&
                     task.DueDate.Date == currentTime.Date &&
                     task.DueTime <= currentTime.TimeOfDay)
                 {
                     task.IsCompleted = true;
+                    SaveTasksToFile(); 
                     UpdateProgressBar();
-                    RemoveTask(task); // Automatically removes from collection and ListView
+                    RemoveTask(task); 
                 }
             }
 
             RefreshListView();
-
-
         }
+
+        private void UpdateTaskCounts()
+        {
+            int totalTasks = tasks.Count;
+            int pendingTasks = tasks.Count(t => !t.IsCompleted);
+
+            lblTotalTasks.Text = $"Total Tasks: {totalTasks}";
+            lblPendingTasks.Text = $"Pending Tasks: {pendingTasks}";
+        }
+
         private void UpdatePendingTasks()
         {
             int pendingTasks = tasks.Count(t => !t.IsCompleted);
@@ -198,6 +210,7 @@ namespace DoerList
                     SaveTasksToFile();
                     UpdateTaskList();
                     UpdateProgressBar();
+                    UpdateTaskCounts(); 
                     HighlightTaskDates();
                     ShowNotification("Task added successfully!", NotificationType.Success);
                 }
@@ -212,11 +225,10 @@ namespace DoerList
                 ListViewItem selectedItem = listViewTask.SelectedItems[0];
                 string taskName = selectedItem.Text;
 
-                // Find the task in the data source
                 TaskItem taskToRemove = tasks.FirstOrDefault(t => t.Name == taskName);
                 if (taskToRemove != null)
                 {
-                    // Remove the task using the helper method
+ 
                     RemoveTask(taskToRemove);
                 }
             }
@@ -314,7 +326,7 @@ namespace DoerList
                 {
                     foreach (var task in tasks)
                     {
-                    
+
                         string line = $"{task.Name}|{task.DueDate:yyyy-MM-dd}|{task.DueTime}|{task.IsCompleted}";
                         writer.WriteLine(line);
                     }
@@ -332,14 +344,14 @@ namespace DoerList
             {
                 if (File.Exists(taskFilePath))
                 {
-                    tasks.Clear(); // Clear existing tasks
+                    tasks.Clear(); 
 
                     using (StreamReader reader = new StreamReader(taskFilePath))
                     {
                         string line;
                         while ((line = reader.ReadLine()) != null)
                         {
-                            // Split line by the pipe separator
+
                             var parts = line.Split('|');
                             if (parts.Length == 4)
                             {
@@ -348,13 +360,15 @@ namespace DoerList
                                 TimeSpan dueTime = TimeSpan.Parse(parts[2]);
                                 bool isCompleted = bool.Parse(parts[3]);
 
-                                // Add task to the list
                                 tasks.Add(new TaskItem(name, dueDate, dueTime) { IsCompleted = isCompleted });
                             }
                         }
                     }
+
+                   
                     UpdateTaskList();
                     UpdateProgressBar();
+                    UpdateTaskCounts(); 
                     ShowNotification("Tasks loaded successfully!", NotificationType.Success);
                 }
                 else
@@ -472,26 +486,26 @@ namespace DoerList
                 if (!task.IsCompleted && DateTime.Now >= task.DueDate + task.DueTime)
                 {
                     task.IsCompleted = true;
-                    RemoveTask(task); // Ensure it updates the UI and saves the list
+                    RemoveTask(task); 
                     ShowNotification($"Task '{task.Name}' marked as completed!", NotificationType.Info);
                 }
 
 
-                // Mark task as completed and update progress if the due time has passed
+             
                 if (!task.IsCompleted &&
                         task.DueDate.Date == currentTime.Date &&
                         task.DueTime <= currentTime.TimeOfDay)
                 {
                     task.IsCompleted = true;
                     UpdateProgressBar();
-                    RemoveTask(task); // Automatically removes from collection and ListView
+                    RemoveTask(task); 
                 }
             }
             RefreshListView();
         }
 
-       
-    
+
+
 
 
         private void RemoveTaskFromListView(TaskItem task)
@@ -512,10 +526,10 @@ namespace DoerList
 
         private void RefreshListView()
         {
-            // Clear existing items
+       
             listViewTask.Items.Clear();
 
-            // Add current tasks
+           
             foreach (var task in tasks)
             {
                 ListViewItem listItem = new ListViewItem(task.Name);
@@ -536,11 +550,11 @@ namespace DoerList
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            
+            listViewTask.Items.Clear();
 
             foreach (var task in tasks)
             {
-                if (!task.IsCompleted) // Show only incomplete tasks
+                if (!task.IsCompleted)
                 {
                     var listItem = new ListViewItem(task.Name);
                     listItem.SubItems.Add(task.DueDate.ToShortDateString());
@@ -552,9 +566,9 @@ namespace DoerList
 
         private void RemoveTask(TaskItem task)
         {
-            if (tasks.Remove(task)) // Remove from the list
+            if (tasks.Remove(task)) 
             {
-                // Update ListView
+                
                 foreach (ListViewItem item in listViewTask.Items)
                 {
                     if (item.Text == task.Name)
@@ -563,7 +577,6 @@ namespace DoerList
                         break;
                     }
                 }
-                // Update UI and save changes
                 tasks.Remove(task);
                 SaveTasksToFile();
                 UpdateTaskList();
@@ -579,10 +592,10 @@ namespace DoerList
 
         private void CompleteTask(TaskItem task)
         {
-            task.IsCompleted = true; // Mark as completed
-            SaveTasksToFile(); // Save the updated state
-            UpdateTaskList(); // Refresh task list UI
-            UpdateProgressBar(); // Update progress bar
+            task.IsCompleted = true; 
+            SaveTasksToFile(); 
+            UpdateTaskList(); 
+            UpdateProgressBar(); 
             Debug.WriteLine($"Task Completed: {task.Name}");
         }
 
@@ -593,7 +606,28 @@ namespace DoerList
             tasks.Add(new TaskItem("Test Task 3", DateTime.Now, TimeSpan.Zero) { IsCompleted = true });
 
             Debug.WriteLine($"Tasks: {tasks.Count}, Completed: {tasks.Count(t => t.IsCompleted)}");
-            UpdateProgressBar(); // Update to reflect changes
+            UpdateProgressBar(); 
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                this.Close(); 
+            }
+            else
+            {
+              return;
+            }
+        }
+
+
+
+
+
+
+
     }
 }

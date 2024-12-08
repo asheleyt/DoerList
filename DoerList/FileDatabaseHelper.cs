@@ -105,7 +105,7 @@ namespace DoerList
             foreach (var line in File.ReadLines(tasksFile))
             {
                 var parts = line.Split('|');
-                if (parts.Length == 4) // Ensure the file matches the new format
+                if (parts.Length == 4) 
                 {
                     string name = parts[0];
                     DateTime dueDate = DateTime.Parse(parts[1]);

@@ -39,9 +39,9 @@
             button1 = new Button();
             btnClearAllMain = new Button();
             lblPendingTasks = new Label();
-            button2 = new Button();
+            btnLogout = new Button();
             numericUpDown1 = new NumericUpDown();
-            label2 = new Label();
+            lblUser = new Label();
             UpdateDailyDoersProgress = new ProgressBar();
             MarkAsCompleted = new Button();
             timer = new System.Windows.Forms.Timer(components);
@@ -139,15 +139,16 @@
             lblPendingTasks.TabIndex = 21;
             lblPendingTasks.Text = "Pending Tasks:";
             // 
-            // button2
+            // btnLogout
             // 
-            button2.Location = new Point(11, 50);
-            button2.Margin = new Padding(2);
-            button2.Name = "button2";
-            button2.Size = new Size(78, 20);
-            button2.TabIndex = 22;
-            button2.Text = "Log out";
-            button2.UseVisualStyleBackColor = true;
+            btnLogout.Location = new Point(11, 50);
+            btnLogout.Margin = new Padding(2);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(78, 20);
+            btnLogout.TabIndex = 22;
+            btnLogout.Text = "Log out";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
             // 
             // numericUpDown1
             // 
@@ -157,14 +158,14 @@
             numericUpDown1.Size = new Size(126, 23);
             numericUpDown1.TabIndex = 27;
             // 
-            // label2
+            // lblUser
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(12, 24);
-            label2.Name = "label2";
-            label2.Size = new Size(36, 15);
-            label2.TabIndex = 41;
-            label2.Text = "User: ";
+            lblUser.AutoSize = true;
+            lblUser.Location = new Point(12, 24);
+            lblUser.Name = "lblUser";
+            lblUser.Size = new Size(36, 15);
+            lblUser.TabIndex = 41;
+            lblUser.Text = "User: ";
             // 
             // UpdateDailyDoersProgress
             // 
@@ -217,9 +218,9 @@
             Controls.Add(lblTotalTasks);
             Controls.Add(MarkAsCompleted);
             Controls.Add(UpdateDailyDoersProgress);
-            Controls.Add(label2);
+            Controls.Add(lblUser);
             Controls.Add(numericUpDown1);
-            Controls.Add(button2);
+            Controls.Add(btnLogout);
             Controls.Add(lblPendingTasks);
             Controls.Add(btnClearAllMain);
             Controls.Add(button1);
@@ -248,9 +249,9 @@
         private Button button1;
         private Button btnClearAllMain;
         private Label lblPendingTasks;
-        private Button button2;
+        private Button btnLogout;
         private NumericUpDown numericUpDown1;
-        private Label label2;
+        private Label lblUser;
         private ProgressBar UpdateDailyDoersProgress;
         private Button MarkAsCompleted;
         private System.Windows.Forms.Timer timer;
