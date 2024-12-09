@@ -42,7 +42,6 @@
             btnLogout = new Button();
             numericUpDown1 = new NumericUpDown();
             lblUser = new Label();
-            UpdateDailyDoersProgress = new ProgressBar();
             MarkAsCompleted = new Button();
             timer = new System.Windows.Forms.Timer(components);
             btnRefresh = new Button();
@@ -167,13 +166,6 @@
             lblUser.TabIndex = 41;
             lblUser.Text = "User: ";
             // 
-            // UpdateDailyDoersProgress
-            // 
-            UpdateDailyDoersProgress.Location = new Point(508, 50);
-            UpdateDailyDoersProgress.Name = "UpdateDailyDoersProgress";
-            UpdateDailyDoersProgress.Size = new Size(209, 27);
-            UpdateDailyDoersProgress.TabIndex = 43;
-            // 
             // MarkAsCompleted
             // 
             MarkAsCompleted.Location = new Point(272, 223);
@@ -217,7 +209,6 @@
             Controls.Add(btnRefresh);
             Controls.Add(lblTotalTasks);
             Controls.Add(MarkAsCompleted);
-            Controls.Add(UpdateDailyDoersProgress);
             Controls.Add(lblUser);
             Controls.Add(numericUpDown1);
             Controls.Add(btnLogout);
@@ -252,7 +243,6 @@
         private Button btnLogout;
         private NumericUpDown numericUpDown1;
         private Label lblUser;
-        private ProgressBar UpdateDailyDoersProgress;
         private Button MarkAsCompleted;
         private System.Windows.Forms.Timer timer;
         private Button btnRefresh;

@@ -16,9 +16,14 @@
 
             if (FileDatabaseHelper.ValidateUser(username, password))
             {
-                Username = username; 
-                this.DialogResult = DialogResult.OK; 
-                this.Hide(); 
+                Username = username;
+
+                MainForm mainForm = new MainForm(username);
+
+                this.Visible = false;
+
+                mainForm.ShowDialog();
+                this.Close();
             }
             else
             {
@@ -39,7 +44,7 @@
             {
                 string username = txtBoxUsername.Text.Trim();
                 PassForm passForm = new PassForm(username);
-                passForm.ShowDialog(); 
+                passForm.ShowDialog();
             }
             else
             {
