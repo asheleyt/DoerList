@@ -16,28 +16,28 @@
             string newPassword = txtBoxNewPassword.Text.Trim();
             string confirmPassword = txtBoxConfirmPassword.Text.Trim();
 
-       
+
             if (string.IsNullOrWhiteSpace(currentPassword) || string.IsNullOrWhiteSpace(newPassword) || string.IsNullOrWhiteSpace(confirmPassword))
             {
                 MessageBox.Show("All fields are required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-         
+
             if (newPassword != confirmPassword)
             {
                 MessageBox.Show("New passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-           
+
             if (currentPassword == newPassword)
             {
                 MessageBox.Show("New password cannot be the same as the current password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-          
+
             if (!FileDatabaseHelper.IsValidPassword(newPassword))
             {
                 MessageBox.Show("New password must be at least 8 characters long and include letters, numbers, and special characters.",
@@ -45,19 +45,19 @@
                 return;
             }
 
-          
+
             var result = MessageBox.Show("Are you sure you want to change your password?",
                                          "Confirm Password Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result != DialogResult.Yes)
                 return;
 
-      
+
             if (FileDatabaseHelper.ChangePassword(loggedInUsername, currentPassword, newPassword))
             {
                 MessageBox.Show("Password changed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-           
+
                 txtBoxCurrentPassword.Clear();
                 txtBoxNewPassword.Clear();
                 txtBoxConfirmPassword.Clear();
@@ -71,7 +71,7 @@
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-           
+
             btnChangePassword.Enabled = !string.IsNullOrWhiteSpace(txtBoxCurrentPassword.Text) &&
                                          !string.IsNullOrWhiteSpace(txtBoxNewPassword.Text) &&
                                          !string.IsNullOrWhiteSpace(txtBoxConfirmPassword.Text);
@@ -79,13 +79,18 @@
 
         private void PassForm_Load(object sender, EventArgs e)
         {
-            
+
             txtBoxCurrentPassword.TextChanged += TextBox_TextChanged;
             txtBoxNewPassword.TextChanged += TextBox_TextChanged;
             txtBoxConfirmPassword.TextChanged += TextBox_TextChanged;
 
-           
+
             btnChangePassword.Enabled = false;
+        }
+
+        private void PassForm_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

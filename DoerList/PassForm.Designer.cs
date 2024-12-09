@@ -35,80 +35,94 @@
             txtBoxConfirmPassword = new TextBox();
             lblConfirmPassword = new Label();
             btnChangePassword = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // lblCurrentPassword
             // 
             lblCurrentPassword.AutoSize = true;
-            lblCurrentPassword.Location = new Point(29, 33);
-            lblCurrentPassword.Margin = new Padding(4, 0, 4, 0);
+            lblCurrentPassword.Font = new Font("Rockwell", 11F);
+            lblCurrentPassword.Location = new Point(12, 63);
             lblCurrentPassword.Name = "lblCurrentPassword";
-            lblCurrentPassword.Size = new Size(150, 25);
+            lblCurrentPassword.Size = new Size(138, 17);
             lblCurrentPassword.TabIndex = 0;
-            lblCurrentPassword.Text = "Current Password";
+            lblCurrentPassword.Text = "Current Password:";
             // 
             // txtBoxCurrentPassword
             // 
-            txtBoxCurrentPassword.Location = new Point(180, 33);
-            txtBoxCurrentPassword.Margin = new Padding(4, 5, 4, 5);
+            txtBoxCurrentPassword.Font = new Font("Rockwell", 11F);
+            txtBoxCurrentPassword.Location = new Point(147, 60);
             txtBoxCurrentPassword.Name = "txtBoxCurrentPassword";
-            txtBoxCurrentPassword.Size = new Size(211, 31);
+            txtBoxCurrentPassword.Size = new Size(149, 25);
             txtBoxCurrentPassword.TabIndex = 1;
             // 
             // txtBoxNewPassword
             // 
-            txtBoxNewPassword.Location = new Point(180, 97);
-            txtBoxNewPassword.Margin = new Padding(4, 5, 4, 5);
+            txtBoxNewPassword.Font = new Font("Rockwell", 11F);
+            txtBoxNewPassword.Location = new Point(147, 101);
             txtBoxNewPassword.Name = "txtBoxNewPassword";
             txtBoxNewPassword.PasswordChar = '*';
-            txtBoxNewPassword.Size = new Size(211, 31);
+            txtBoxNewPassword.Size = new Size(149, 25);
             txtBoxNewPassword.TabIndex = 3;
             // 
             // lblNewPassword
             // 
             lblNewPassword.AutoSize = true;
-            lblNewPassword.Location = new Point(51, 97);
-            lblNewPassword.Margin = new Padding(4, 0, 4, 0);
+            lblNewPassword.Font = new Font("Rockwell", 11F);
+            lblNewPassword.Location = new Point(26, 104);
             lblNewPassword.Name = "lblNewPassword";
-            lblNewPassword.Size = new Size(127, 25);
+            lblNewPassword.Size = new Size(115, 17);
             lblNewPassword.TabIndex = 2;
-            lblNewPassword.Text = "New Password";
+            lblNewPassword.Text = "New Password:";
             // 
             // txtBoxConfirmPassword
             // 
-            txtBoxConfirmPassword.Location = new Point(180, 162);
-            txtBoxConfirmPassword.Margin = new Padding(4, 5, 4, 5);
+            txtBoxConfirmPassword.Font = new Font("Rockwell", 11F);
+            txtBoxConfirmPassword.Location = new Point(147, 142);
             txtBoxConfirmPassword.Name = "txtBoxConfirmPassword";
             txtBoxConfirmPassword.PasswordChar = '*';
-            txtBoxConfirmPassword.Size = new Size(211, 31);
+            txtBoxConfirmPassword.Size = new Size(149, 25);
             txtBoxConfirmPassword.TabIndex = 5;
             // 
             // lblConfirmPassword
             // 
             lblConfirmPassword.AutoSize = true;
-            lblConfirmPassword.Location = new Point(23, 162);
-            lblConfirmPassword.Margin = new Padding(4, 0, 4, 0);
+            lblConfirmPassword.Font = new Font("Rockwell", 11F);
+            lblConfirmPassword.Location = new Point(10, 145);
             lblConfirmPassword.Name = "lblConfirmPassword";
-            lblConfirmPassword.Size = new Size(156, 25);
+            lblConfirmPassword.Size = new Size(140, 17);
             lblConfirmPassword.TabIndex = 4;
-            lblConfirmPassword.Text = "Confirm Password";
+            lblConfirmPassword.Text = "Confirm Password:";
             // 
             // btnChangePassword
             // 
-            btnChangePassword.Location = new Point(180, 232);
-            btnChangePassword.Margin = new Padding(4, 5, 4, 5);
+            btnChangePassword.BackColor = Color.Gainsboro;
+            btnChangePassword.Font = new Font("Rockwell", 10F);
+            btnChangePassword.Location = new Point(124, 188);
             btnChangePassword.Name = "btnChangePassword";
-            btnChangePassword.Size = new Size(119, 38);
+            btnChangePassword.Size = new Size(84, 31);
             btnChangePassword.TabIndex = 6;
             btnChangePassword.Text = "Change Password";
-            btnChangePassword.UseVisualStyleBackColor = true;
+            btnChangePassword.UseVisualStyleBackColor = false;
             btnChangePassword.Click += btnChangePassword_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Rockwell", 14F);
+            label1.Location = new Point(78, 21);
+            label1.Name = "label1";
+            label1.Size = new Size(169, 21);
+            label1.TabIndex = 7;
+            label1.Text = "Change Password";
             // 
             // PassForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(476, 307);
+            BackColor = SystemColors.ActiveCaption;
+            ClientSize = new Size(333, 231);
+            Controls.Add(label1);
             Controls.Add(btnChangePassword);
             Controls.Add(txtBoxConfirmPassword);
             Controls.Add(lblConfirmPassword);
@@ -116,9 +130,9 @@
             Controls.Add(lblNewPassword);
             Controls.Add(txtBoxCurrentPassword);
             Controls.Add(lblCurrentPassword);
-            Margin = new Padding(4, 5, 4, 5);
             Name = "PassForm";
             Text = "Change Password";
+            Load += PassForm_Load_1;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -132,5 +146,6 @@
         private TextBox txtBoxConfirmPassword;
         private Label lblConfirmPassword;
         private Button btnChangePassword;
+        private Label label1;
     }
 }
